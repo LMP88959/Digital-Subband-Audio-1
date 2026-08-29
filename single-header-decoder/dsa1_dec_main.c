@@ -87,7 +87,7 @@ usage(int extra)
     char *p = progname;
 
     printf(DRV_HEADER);
-    printf("usage: %s d [options]\n", p);
+    printf("usage: %s [options]\n", p);
     printf("sample usage: %s -v -inp=out.dsa -out=recon.wav\n", p);
     print_params(dec_params, extra);
 }
