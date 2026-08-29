@@ -33,6 +33,8 @@ It performs best at >= 160kbps (for 44.1 kHz 16-bit stereo audio).
    - global energy variance
 - written to be compatible with C89
 
+------
+
 This code follows my self-imposed restrictions:
 
 1. Everything must be done in software, no explicit usage of hardware acceleration.
