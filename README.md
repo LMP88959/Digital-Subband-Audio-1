@@ -7,6 +7,21 @@ It performs best at >= 160kbps (for 44.1 kHz 16-bit stereo audio).
 
 ------
 
+## Quality
+
+Using the relatively new audio metric [zimtohrli](https://github.com/google/zimtohrli), this codec was evaluated on the same 40-sample test suite used in this test:  
+https://listening-test.coresv.net/results.htm
+
+(Higher is better)  
+The average score at **128kbps** for DSA was **4.421**, placing it approximately between MP3 and Vorbis.  
+The score of other codecs at 128kbps, for reference:  
+MP3 - 4.272  
+Vorbis - 4.636  
+Apple AAC - 4.673  
+Opus - 4.849  
+
+------
+
 ## DSA1 Features
 
 - compression using multiresolution subband analysis instead of MDCT
