@@ -38,7 +38,7 @@ s2u(int v)
 static int
 u2s(unsigned uv)
 {
-    return (uv >> 1) ^ (-(uv & 1));
+    return (((uv) & (unsigned) 1) ? -(int)(((uv) >> 1) + 1u) : (int) ((uv) >> 1));
 }
 
 /*

@@ -254,7 +254,7 @@ dsa_dec(DSA_DECODER *d, DSA_BUF *buffer, DSA_PCM *out, DSA_FNUM *fn)
         ret = DSA_DEC_ERROR;
         goto cleanup;
     }
-    *fn = -1;
+    *fn = ~(DSA_FNUM) 0;
 
     dsa_bs_init(&bs, buffer->data);
     pkt_type = decode_packet_hdr(&bs);

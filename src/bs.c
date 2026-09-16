@@ -31,7 +31,7 @@ dsa_bs_align(DSA_BS *s)
     if (dsa_bs_aligned(s)) {
         return; /* already aligned */
     }
-    s->pos = ((s->pos + 7) & ((unsigned) (~0) << 3)); /* byte align */
+    s->pos = ((s->pos + (unsigned) 7) & (~(unsigned) 7)); /* byte align */
 }
 
 extern void
@@ -84,7 +84,7 @@ local_put_bits(DSA_BS *s, unsigned n, unsigned v)
     while (n > 0) {
         rem = 8 - (s->pos & 7);
         rem = MIN(n, rem);
-        bit = (7 - (s->pos & 7)) - rem + 1;
+        bit = (8 - (s->pos & 7)) - rem;
         data = (v >> (n - rem)) & ((1 << rem) - 1);
         s->start[dsa_bs_ptr(s)] |= data << bit;
         n -= rem;
@@ -118,7 +118,7 @@ dsa_bs_get_bits(DSA_BS *s, unsigned n)
     while (n > 0) {
         rem = 8 - (s->pos & 7);
         rem = MIN(n, rem);
-        bit = (7 - (s->pos & 7)) - rem + 1;
+        bit = (8 - (s->pos & 7)) - rem;
         out <<= rem;
         out |= (s->start[dsa_bs_ptr(s)] & (((1 << rem) - 1) << bit)) >> bit;
         n -= rem;

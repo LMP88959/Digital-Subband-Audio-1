@@ -74,7 +74,7 @@ a_weight_approx(uint32_t f)
     a = f2 * 1024 / (f2 + 2);
     b = f2 * 1024 / (f2 + 581406);
 
-    return (a * b) * 16384 / (f2 + 309);
+    return (a * b) * 4096 / ((f2 + 309));
 }
 
 static int
@@ -87,8 +87,9 @@ bitrate_priority_curve(int bitrate) {
 static void
 calc_weights(DSA_PSYSTATE *psy, int sample_rate, int num_bands, int bitrate)
 {
-    int i, total = 0;
-    int weights[DSA_MAX_FRAME_SUBBANDS];
+    int i;
+    uint32_t total = 0;
+    uint32_t weights[DSA_MAX_FRAME_SUBBANDS];
     int priority = bitrate_priority_curve(bitrate);
 
     priority = (sample_rate * priority / 3000);
@@ -105,7 +106,7 @@ calc_weights(DSA_PSYSTATE *psy, int sample_rate, int num_bands, int bitrate)
     total = MAX(total, 1);
     /* 'normalize' */
     for (i = 0; i < num_bands; i++) {
-        psy->a_weights[i] = (weights[i] * 512) / total;
+        psy->a_weights[i] = (weights[i] * weights[i]) / (8 * total);
     }
 }
 
@@ -202,9 +203,8 @@ inter_band_corr(
     uint32_t em,
     int use_child)
 {
-    int32_t diff, corr = 0;
     uint32_t ep = 0, ec = 0;
-    uint32_t avg_neighbors;
+    uint32_t diff, avg_neighbors;
 
     if (band_end <= band_beg ||
         parent_end <= parent_beg ||
@@ -225,8 +225,11 @@ inter_band_corr(
         diff >>= 1;
         avg_neighbors >>= 1;
     }
-    corr = 256 - ((diff << 8) / (avg_neighbors + 1));
-    return CLAMP(corr, 0, 256);
+    diff = ((diff << 8) / (avg_neighbors + 1));
+    if (diff >= 256) {
+        return 0;
+    }
+    return 256 - diff;
 }
 
 static int

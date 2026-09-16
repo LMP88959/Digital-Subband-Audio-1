@@ -76,7 +76,8 @@ use_mid_side(DSA_ENCODER *enc, DSA_SAMPLE *pcm, int num_samples, int effort)
     uint32_t ms[2] = { 0, 0 };
     int nzlr[2] = { 0, 0 }; /* count number zeros */
     int nzms[2] = { 0, 0 };
-    int i, quant_guess = ~((1 << dsa_lb2(enc->avgquant)) - 1); /* guessing approximately what this new frame will be quantized with */
+    uint32_t quant_guess = ~(unsigned) ((1 << dsa_lb2(enc->avgquant)) - 1); /* guessing approximately what this new frame will be quantized with */
+    int i;
 
     effort = 2 << ((DSA_MAX_EFFORT - effort) / 3); /* skip over frames depending on effort */
     for (i = 0; i < num_samples; i += effort) {

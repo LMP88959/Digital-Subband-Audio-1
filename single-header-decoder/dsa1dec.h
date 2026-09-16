@@ -615,7 +615,7 @@ bsa_align(DSA_BS *s)
     if (bsa_aligned(s)) {
         return; /* already aligned */
     }
-    s->pos = ((s->pos + 7) & ((unsigned) (~0) << 3)); /* byte align */
+    s->pos = ((s->pos + (unsigned) 7) & (~(unsigned) 7)); /* byte align */
 }
 
 static unsigned
@@ -637,7 +637,7 @@ bsa_get_bits(DSA_BS *s, unsigned n)
     while (n > 0) {
         rem = 8 - (s->pos & 7);
         rem = MIN(n, rem);
-        bit = (7 - (s->pos & 7)) - rem + 1;
+        bit = (8 - (s->pos & 7)) - rem;
         out <<= rem;
         out |= (s->start[bsa_ptr(s)] & (((1 << rem) - 1) << bit)) >> bit;
         n -= rem;
@@ -853,7 +853,7 @@ dsa1_inv_sbt(DSA_SAMPLE *coefs, int nchan, DSA_SAMPLE *out, int transform_type)
 static int
 u2s(unsigned uv)
 {
-    return (uv >> 1) ^ (-(uv & 1));
+    return (((uv) & (unsigned) 1) ? -(int)(((uv) >> 1) + 1u) : (int) ((uv) >> 1));
 }
 
 /*
@@ -1183,8 +1183,8 @@ dsa1_dec(DSA_DECODER *d, DSA_BUF *buffer, DSA_PCM *out, DSA_FNUM *fn)
         ret = DSA_DEC_ERROR;
         goto cleanup;
     }
-    *fn = -1;
-
+    *fn = ~(DSA_FNUM) 0;
+    
     bsa_init(&bs, buffer->data);
     pkt_type = decode_packet_hdr(&bs);
 
