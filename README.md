@@ -13,7 +13,7 @@ Using the relatively new audio metric [zimtohrli](https://github.com/google/zimt
 https://listening-test.coresv.net/results.htm
 
 (Higher is better)  
-The average score at **128kbps** for DSA was **4.421**, placing it approximately between MP3 and Vorbis.  
+The average score at **128kbps** for DSA was **4.426**, placing it approximately between MP3 and Vorbis.  
 The score of other codecs at 128kbps, for reference:  
 MP3 - 4.272  
 Vorbis - 4.636  
